@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 
 import { createShortUrlSchema } from "@/lib/schemas";
-import { error } from "console";
 
 export async function createShortUrl(prevState: unknown, formData: FormData) {
   try {
