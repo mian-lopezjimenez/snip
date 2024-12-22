@@ -14,7 +14,7 @@ const Hero = () => {
       <p className="text-justify">
         Are you ready to take your link-sharing to the next level? With Snip,
         you can transform ordinary URLs into powerful branding tools. By
-        creating a free account, you'll gain access to a suite of features
+        creating a free account, you&apos;ll gain access to a suite of features
         designed to enhance your online presence.
       </p>
 
