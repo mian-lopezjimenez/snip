@@ -28,7 +28,7 @@ export async function createShortUrl(prevState: unknown, formData: FormData) {
       url: shortUrl,
       success: "Short URL created successfully!",
     };
-  } catch (error) {
+  } catch (_) {
     return {
       url: "",
       success: "",

@@ -18,9 +18,10 @@ const ShortURLForm = () => {
   useEffect(() => {
     if (state.success) {
       toast.success(state.success);
-    } else {
-      toast.error(state.errors?.url);
+      return;
     }
+
+    toast.error(state.errors?.url);
   }, [state]);
 
   return (
