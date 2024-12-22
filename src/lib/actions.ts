@@ -27,10 +27,11 @@ export async function createShortUrl(prevState: unknown, formData: FormData) {
       url: shortUrl,
       success: "Short URL created successfully!",
     };
-  } catch (_) {
+  } catch (error) {
     return {
       url: "",
       success: "",
+      errors: { url: [(error as Error).message] },
     };
   } finally {
     revalidatePath("/");
