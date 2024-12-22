@@ -21,7 +21,9 @@ const ShortURLForm = () => {
       return;
     }
 
-    toast.error(state.errors?.url);
+    if (state.error) {
+      toast.error(state?.error?.message);
+    }
   }, [state]);
 
   return (

@@ -2,9 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
+import { CreateShortURLResponse } from "@/lib/intefaces";
 import { createShortUrlSchema } from "@/lib/schemas";
 
-export async function createShortUrl(prevState: unknown, formData: FormData) {
+export async function createShortUrl(
+  prevState: unknown,
+  formData: FormData
+): Promise<CreateShortURLResponse> {
   try {
     const validatedFields = createShortUrlSchema.safeParse({
       url: formData.get("url"),
@@ -31,7 +35,10 @@ export async function createShortUrl(prevState: unknown, formData: FormData) {
     return {
       url: "",
       success: "",
-      errors: { url: [(error as Error).message] },
+      error: {
+        message:
+          error instanceof Error ? error.message : "Something went wrong",
+      },
     };
   } finally {
     revalidatePath("/");
