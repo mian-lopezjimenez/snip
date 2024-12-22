@@ -1,4 +1,4 @@
-interface CreateShortURLResponse {
+export interface CreateShortURLResponse {
   url: string;
   success: string;
   errors?: {

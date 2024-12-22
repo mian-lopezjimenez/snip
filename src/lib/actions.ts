@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { CreateShortURLResponse } from "@/lib/intefaces";
 import { createShortUrlSchema } from "@/lib/schemas";
 
 export async function createShortUrl(
