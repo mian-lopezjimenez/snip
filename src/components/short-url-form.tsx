@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createShortUrl } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
+import Spinner from "@/components/spinner";
 
 const ShortURLForm = () => {
   const [state, formAction, isPending] = useActionState(createShortUrl, {
@@ -38,7 +39,7 @@ const ShortURLForm = () => {
           ))}
       </div>
       <Button disabled={isPending} type="submit">
-        Submit <Scissors />
+        Submit {isPending ? <Spinner className="w-4 h-4" /> : <Scissors />}
       </Button>
     </form>
   );
