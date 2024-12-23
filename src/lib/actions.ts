@@ -1,9 +1,11 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { CreateShortURLResponse } from "@/lib/intefaces";
+import { CreateShortURLResponse } from "@/types";
 import { createShortUrlSchema } from "@/lib/schemas";
+import { createClient } from "@/utils/supabase/server";
 
 export async function createShortUrl(
   prevState: unknown,
@@ -42,5 +44,35 @@ export async function createShortUrl(
     };
   } finally {
     revalidatePath("/");
+  }
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signOut();
+
+  if (!error) {
+    revalidatePath("/");
+    redirect("/");
+  }
+}
+
+export async function login() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}auth/callback`,
+    },
+  });
+
+  if (error) {
+    redirect("/error");
+    return;
+  }
+
+  if (data.url) {
+    redirect(data.url);
   }
 }
