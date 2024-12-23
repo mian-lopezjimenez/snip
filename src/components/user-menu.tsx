@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LogOut } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +42,13 @@ const UserMenu = async () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/private">
+            <LayoutDashboard />
+            <span>Dashboard</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <LogOutButton />
       </DropdownMenuContent>
