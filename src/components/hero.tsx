@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import GradientText from "@/components/gradient-text";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -17,7 +18,9 @@ const Hero = () => {
         designed to enhance your online presence.
       </p>
 
-      <Button className="w-56">Sign up</Button>
+      <Button className="w-56" asChild>
+        <Link href="/login">Sign up</Link>
+      </Button>
     </section>
   );
 };
