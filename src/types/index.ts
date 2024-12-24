@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface CreateShortURLResponse {
   url: string;
   success: string;
@@ -7,4 +9,10 @@ export interface CreateShortURLResponse {
   error?: {
     message: string;
   };
+}
+
+export interface Feature {
+  icon: ReactNode;
+  title: string;
+  content: string;
 }

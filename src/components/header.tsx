@@ -9,7 +9,7 @@ import UserMenu from "./user-menu";
 
 const Header = () => {
   return (
-    <header className="container mx-auto flex gap-2 justify-between px-2 md:px-0 py-2 mb-8 border-b-2">
+    <header className="sticky bg-background top-0 z-50 container mx-auto flex gap-2 justify-between px-6 xl:px-0 py-2 mb-8 border-b-2">
       <Link className="text-3xl flex items-center justify-center" href="/">
         <GradientText>S</GradientText>
       </Link>
