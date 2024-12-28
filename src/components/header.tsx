@@ -9,13 +9,13 @@ import UserMenu from "./user-menu";
 
 const Header = () => {
   return (
-    <header className="sticky bg-background top-0 z-50 container mx-auto flex gap-2 justify-between px-6 xl:px-0 py-2 mb-8 border-b-2">
+    <header className="sticky bg-background top-0 z-50 container mx-auto flex gap-2 justify-between px-6 2xl:px-0 py-2 mb-8 border-b-2">
       <Link className="text-3xl flex items-center justify-center" href="/">
         <GradientText>S</GradientText>
       </Link>
 
       <div className="flex gap-x-2">
-        <Suspense fallback={<Skeleton className="w-10 h-10 rounded-full" />}>
+        <Suspense fallback={<Skeleton className="w-20" />}>
           <UserMenu />
         </Suspense>
         <ThemeToggle />

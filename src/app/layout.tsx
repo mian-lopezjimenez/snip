@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import Header from "@/components/header";
 
 import "./globals.css";
 
@@ -33,9 +31,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
           {children}
-          <Toaster position="top-right" />
         </ThemeProvider>
       </body>
     </html>
