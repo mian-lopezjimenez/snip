@@ -3,22 +3,28 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+import { z } from "zod";
+import { nanoid } from "nanoid";
+
+import { createClient } from "@/utils/supabase/server";
 import { CreateShortURLResponse } from "@/types";
 import { createShortUrlSchema } from "@/lib/schemas";
-import { createClient } from "@/utils/supabase/server";
 
 export async function createShortUrl(
   prevState: unknown,
   formData: FormData
 ): Promise<CreateShortURLResponse> {
   try {
-    const validatedFields = createShortUrlSchema.safeParse({
-      url: formData.get("url"),
-    });
+    const supabase = await createClient();
+    const data = Object.fromEntries(formData) as z.infer<
+      typeof createShortUrlSchema
+    >;
+    const validatedFields = createShortUrlSchema.safeParse(data);
 
     if (!validatedFields.success) {
       return {
         url: "",
+        data,
         success: "",
         errors: validatedFields.error.flatten().fieldErrors,
       };
@@ -26,8 +32,25 @@ export async function createShortUrl(
 
     const { url } = validatedFields.data;
 
-    const hash = btoa(url).substring(0, 8);
-    const shortUrl = `http://localhost:3000/${hash}`;
+    const urlId: string = nanoid(8);
+    const shortUrl: string = `${process.env.NEXT_PUBLIC_BASE_URL}/${urlId}`;
+
+    const { error } = await supabase.from("urls").insert({
+      id: crypto.randomUUID(),
+      original_url: url,
+      short_url: shortUrl,
+      user_id: null,
+    });
+
+    if (error) {
+      return {
+        url: "",
+        success: "",
+        error: {
+          message: error.message,
+        },
+      };
+    }
 
     return {
       url: shortUrl,

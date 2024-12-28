@@ -1,9 +1,10 @@
+import { Suspense } from "react";
+
 import Features from "@/components/features";
 import Footer from "@/components/footer";
 import GradientText from "@/components/gradient-text";
 import Hero from "@/components/hero";
 import ShortURLForm from "@/components/short-url-form";
-import { Suspense } from "react";
 
 export default function Home() {
   return (

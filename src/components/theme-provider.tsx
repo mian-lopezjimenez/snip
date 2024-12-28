@@ -1,11 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { Suspense } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <Suspense>
+      <NextThemesProvider {...props}>{children}</NextThemesProvider>
+    </Suspense>
+  );
 }
