@@ -14,7 +14,7 @@ const UserMenu = async () => {
   const variant = user ? "secondary" : "outline";
 
   return (
-    <Button variant={variant} asChild>
+    <Button className="w-24" variant={variant} asChild>
       <Link href={route}>{label}</Link>
     </Button>
   );
