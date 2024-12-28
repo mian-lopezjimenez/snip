@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/app-sidebar/app-sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   children: ReactNode;
@@ -12,8 +14,14 @@ export default function PrivateLayout({ children }: Props) {
     <SidebarProvider>
       <AppSidebar />
 
-      <main className="py-2 md:py-6 px-2 md:px-6">
-        <SidebarTrigger />
+      <main className="w-full py-2 md:py-6 px-2 md:px-6 flex flex-col gap-y-4 ">
+        <div className="w-full flex gap-x-2 justify-start mb-2 md:mb-4">
+          <Button variant="outline" size="icon" asChild>
+            <SidebarTrigger />
+          </Button>
+          <ThemeToggle />
+        </div>
+
         {children}
       </main>
     </SidebarProvider>

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { geolocation } from "@vercel/functions";
 
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: Request) {
   const { href, origin } = new URL(request.url);
+
+  console.log(geolocation(request));
 
   if (href) {
     const supabase = await createClient();
