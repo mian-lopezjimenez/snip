@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import { links } from "@/lib/data";
+import { useSidebar } from "@/components/ui/sidebar";
+import { title } from "process";
 
 import {
   SidebarContent,
@@ -16,7 +18,14 @@ import {
 } from "@/components/ui/sidebar";
 
 const AppSidebarContent = () => {
+  const { isMobile, setOpenMobile } = useSidebar();
   const pathname = usePathname();
+
+  const handleOpenSidebar = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
     <SidebarContent>
@@ -33,6 +42,7 @@ const AppSidebarContent = () => {
                     className={isActive ? "active" : ""}
                     asChild
                     isActive={isActive}
+                    onClick={handleOpenSidebar}
                   >
                     <Link href={href} prefetch>
                       <Icon />
