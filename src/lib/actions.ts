@@ -34,12 +34,13 @@ export async function createShortUrl(
 
     const urlId: string = nanoid(8);
     const shortUrl: string = `${process.env.NEXT_PUBLIC_BASE_URL}/${urlId}`;
+    const { data: userData } = await supabase.auth.getUser();
 
     const { error } = await supabase.from("urls").insert({
       id: crypto.randomUUID(),
       original_url: url,
       short_url: shortUrl,
-      user_id: null,
+      user_id: userData.user?.id ?? null,
     });
 
     if (error) {
