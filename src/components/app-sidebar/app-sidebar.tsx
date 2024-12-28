@@ -10,7 +10,7 @@ const AppSidebar = () => {
     <Sidebar>
       <AppSidebarContent />
 
-      <Suspense fallback={<Skeleton className="w-60" />}>
+      <Suspense fallback={<Skeleton className="w-60 h-8" />}>
         <AppSidebarFooter />
       </Suspense>
     </Sidebar>
