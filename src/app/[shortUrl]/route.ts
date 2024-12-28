@@ -1,4 +1,4 @@
-import { NextResponse, userAgent } from "next/server";
+import { NextResponse } from "next/server";
 import { geolocation } from "@vercel/functions";
 
 import { createClient } from "@/utils/supabase/server";
