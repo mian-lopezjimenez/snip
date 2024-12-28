@@ -15,7 +15,7 @@ const Header = () => {
       </Link>
 
       <div className="flex gap-x-2">
-        <Suspense fallback={<Skeleton className="w-20" />}>
+        <Suspense fallback={<Skeleton className="w-24" />}>
           <UserMenu />
         </Suspense>
         <ThemeToggle />
