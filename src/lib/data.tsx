@@ -1,4 +1,11 @@
-import { Link, ChartNoAxesCombined, QrCode, Library } from "lucide-react";
+import {
+  Link,
+  ChartNoAxesCombined,
+  QrCode,
+  Library,
+  Home,
+  LayoutDashboard,
+} from "lucide-react";
 
 import { Feature } from "@/types";
 
@@ -26,5 +33,28 @@ export const snipFeatures: Feature[] = [
     title: "Manage your creations",
     content:
       "With Snip, you can manage your links and QR codes, all in one place. You can create, edit, and delete links as well as generate QR codes for your links.",
+  },
+];
+
+export const links = [
+  {
+    title: "Home",
+    href: "/",
+    Icon: Home,
+  },
+  {
+    title: "Dashboard",
+    href: "/private",
+    Icon: LayoutDashboard,
+  },
+  {
+    title: "Custom links",
+    href: "/private/urls",
+    Icon: Link,
+  },
+  {
+    title: "QR codes",
+    href: "/private/qrs",
+    Icon: QrCode,
   },
 ];
