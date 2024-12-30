@@ -12,7 +12,6 @@ import {
 
 import { Feature } from "@/types";
 import { getTotalClicks, getTotalUrls } from "@/lib/db";
-import { createClient } from "@/utils/supabase/server";
 
 export const snipFeatures: Feature[] = [
   {
