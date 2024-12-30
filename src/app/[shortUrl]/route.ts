@@ -1,12 +1,28 @@
-import { NextResponse } from "next/server";
 import { geolocation } from "@vercel/functions";
+import { NextResponse, userAgent } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
 
+export const config = {
+  runtime: "edge",
+};
+
+const geoMockup = {
+  city: "Barcelona",
+  country: "ES",
+  flag: "🇪🇸",
+  countryRegion: "CT",
+  region: "cdg1",
+  latitude: "41.4353",
+  longitude: "2.2104",
+  postalCode: "08030",
+};
+
 export async function GET(request: Request) {
   const { href, origin } = new URL(request.url);
-
-  console.log(geolocation(request));
+  const { browser, os, device } = userAgent(request);
+  const { country, latitude, longitude, city, postalCode } =
+    process.env.NODE_ENV === "development" ? geoMockup : geolocation(request);
 
   if (href) {
     const supabase = await createClient();
@@ -22,6 +38,27 @@ export async function GET(request: Request) {
     }
 
     if (data.original_url) {
+      await supabase
+        .from("urls")
+        .update({ clicks: data.clicks + 1 })
+        .eq("id", data.id);
+
+      await supabase.from("url_clicks").insert({
+        latitude,
+        longitude,
+        country,
+        city,
+        postal_code: postalCode,
+        browser_name: browser.name,
+        browser_version: browser.version,
+        device_model: device.model,
+        device_type: device.type,
+        device_vendor: device.vendor,
+        os_name: os.name,
+        os_version: os.version,
+        url_id: data.id,
+      });
+
       return NextResponse.redirect(data.original_url);
     }
 
