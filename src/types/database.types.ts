@@ -34,8 +34,65 @@ export type Database = {
   };
   public: {
     Tables: {
-      Urls: {
+      url_clicks: {
         Row: {
+          browser_name: string | null;
+          browser_version: string | null;
+          city: string | null;
+          country: string | null;
+          created_at: string;
+          device_model: string | null;
+          device_type: string | null;
+          device_vendor: string | null;
+          id: string;
+          latitude: number | null;
+          longitude: number | null;
+          postal_code: number | null;
+          url_id: string | null;
+        };
+        Insert: {
+          browser_name?: string | null;
+          browser_version?: string | null;
+          city?: string | null;
+          country?: string | null;
+          created_at?: string;
+          device_model?: string | null;
+          device_type?: string | null;
+          device_vendor?: string | null;
+          id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          postal_code?: number | null;
+          url_id?: string | null;
+        };
+        Update: {
+          browser_name?: string | null;
+          browser_version?: string | null;
+          city?: string | null;
+          country?: string | null;
+          created_at?: string;
+          device_model?: string | null;
+          device_type?: string | null;
+          device_vendor?: string | null;
+          id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          postal_code?: number | null;
+          url_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "url_clicks_url_id_fkey";
+            columns: ["url_id"];
+            isOneToOne: false;
+            referencedRelation: "urls";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      urls: {
+        Row: {
+          clicks: number | null;
           created_at: string;
           id: string;
           original_url: string;
@@ -44,6 +101,7 @@ export type Database = {
           user_id: string | null;
         };
         Insert: {
+          clicks?: number | null;
           created_at?: string;
           id?: string;
           original_url?: string;
@@ -52,6 +110,7 @@ export type Database = {
           user_id?: string | null;
         };
         Update: {
+          clicks?: number | null;
           created_at?: string;
           id?: string;
           original_url?: string;
