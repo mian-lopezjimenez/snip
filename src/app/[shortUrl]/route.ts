@@ -1,5 +1,5 @@
 import { geolocation } from "@vercel/functions";
-import { NextResponse, userAgent } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -18,11 +18,12 @@ const geoMockup = {
   postalCode: "08030",
 };
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { href, origin } = new URL(request.url);
   const { browser, os, device } = userAgent(request);
   const { country, latitude, longitude, city, postalCode } =
     process.env.NODE_ENV === "development" ? geoMockup : geolocation(request);
+  const ipAddress = request.headers.get("x-forwarded-for")?.split(",")[0];
 
   if (href) {
     const supabase = await createClient();
@@ -57,6 +58,7 @@ export async function GET(request: Request) {
         os_name: os.name,
         os_version: os.version,
         url_id: data.id,
+        ip_address: ipAddress,
       });
 
       return NextResponse.redirect(data.original_url);

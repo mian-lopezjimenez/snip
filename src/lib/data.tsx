@@ -1,13 +1,17 @@
 import {
-  Link,
   ChartNoAxesCombined,
-  QrCode,
-  Library,
   Home,
   LayoutDashboard,
+  Library,
+  Link,
+  MousePointerClick,
+  QrCode,
+  Scissors,
+  UserRound,
 } from "lucide-react";
 
 import { Feature } from "@/types";
+import { getTotalClicks, getTotalUrls } from "@/lib/db";
 
 export const snipFeatures: Feature[] = [
   {
@@ -56,5 +60,28 @@ export const links = [
     title: "QR codes",
     href: "/private/qrs",
     Icon: QrCode,
+  },
+];
+
+export const indicators = [
+  {
+    title: "Total URLs Shortened",
+    icon: <Scissors className="w-4 h-4" />,
+    getData: getTotalUrls,
+  },
+  {
+    title: "QR Codes Generated",
+    icon: <QrCode className="w-4 h-4" />,
+    getData: () => Promise.resolve({ value: 8734, percentage: "+15.2%" }),
+  },
+  {
+    title: "Total Clicks",
+    icon: <MousePointerClick className="w-4 h-4" />,
+    getData: getTotalClicks,
+  },
+  {
+    title: "Unique Clicks",
+    icon: <UserRound className="w-4 h-4" />,
+    getData: () => Promise.resolve({ value: 1234, percentage: "-2.7%" }),
   },
 ];
