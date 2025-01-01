@@ -1,5 +1,7 @@
 "use client";
 
+import { FC, useState, useEffect } from "react";
+
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -9,37 +11,66 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { type ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const chartData = [
-  { month: "January", clicksTotal: 186, clicksUnique: 80 },
-  { month: "February", clicksTotal: 305, clicksUnique: 200 },
-  { month: "March", clicksTotal: 237, clicksUnique: 120 },
-  { month: "April", clicksTotal: 73, clicksUnique: 190 },
-  { month: "May", clicksTotal: 209, clicksUnique: 130 },
-  { month: "June", clicksTotal: 214, clicksUnique: 140 },
-];
+import { ChartSkeleton } from "@/components/skeletons";
+import { getChartClicksData } from "@/lib/db";
+import { MonthClicks } from "@/types";
+import { type ChartConfig } from "@/components/ui/chart";
+import NoChartData from "./no-chart-data";
 
 const chartConfig = {
-  clicksTotal: {
+  totalClicks: {
     label: "Total",
     color: "hsl(var(--chart-1))",
   },
-  clicksUnique: {
+  uniqueClicks: {
     label: "Unique",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-const ClicksChart = () => {
+interface Props {
+  userId: string | undefined;
+}
+
+const ClicksChart: FC<Props> = ({ userId }) => {
+  const [chartData, setChartData] = useState<MonthClicks[] | undefined>([]);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const data = await getChartClicksData(userId);
+
+      if (data) {
+        setChartData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  if (loading) {
+    return <ChartSkeleton />;
+  }
+
+  if (!loading && !chartData) {
+    return <NoChartData />;
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Clicks by month</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer className="min-h-[200px] w-full" config={chartConfig}>
           <BarChart data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -53,13 +84,13 @@ const ClicksChart = () => {
             <ChartLegend content={<ChartLegendContent />} />
             <Bar
               isAnimationActive={false}
-              dataKey="clicksTotal"
-              fill={chartConfig.clicksTotal.color}
+              dataKey="totalClicks"
+              fill={chartConfig.totalClicks.color}
             />
             <Bar
               isAnimationActive={false}
-              dataKey="clicksUnique"
-              fill={chartConfig.clicksUnique.color}
+              dataKey="uniqueClicks"
+              fill={chartConfig.uniqueClicks.color}
             />
           </BarChart>
         </ChartContainer>

@@ -17,3 +17,20 @@ export interface Feature {
   title: string;
   content: string;
 }
+
+export interface IndicatorsResponse {
+  value: number;
+  percentage: string;
+}
+
+export interface MonthClicks {
+  month: string;
+  totalClicks: number;
+  uniqueClicks: number;
+}
+
+export interface CountryClicks {
+  country: string;
+  totalClicks: number;
+  uniqueClicks: number;
+}

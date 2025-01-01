@@ -1,5 +1,7 @@
 "use client";
 
+import { FC, useState, useEffect } from "react";
+
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -11,15 +13,10 @@ import {
 } from "@/components/ui/chart";
 import { type ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const chartData = [
-  { country: "USA", totalClicks: 233, uniqueClicks: 200 },
-  { country: "Canada", totalClicks: 237, uniqueClicks: 120 },
-  { country: "France", totalClicks: 343, uniqueClicks: 190 },
-  { country: "Spain", totalClicks: 200, uniqueClicks: 130 },
-  { country: "Japan", totalClicks: 214, uniqueClicks: 140 },
-  { country: "Germany", totalClicks: 234, uniqueClicks: 110 },
-];
+import { getChartCountryClicksData } from "@/lib/db";
+import { CountryClicks } from "@/types";
+import { ChartSkeleton } from "@/components/skeletons";
+import NoChartData from "./no-chart-data";
 
 const chartConfig = {
   totalClicks: {
@@ -32,7 +29,41 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CountryChart = () => {
+interface Props {
+  userId: string | undefined;
+}
+
+const CountryChart: FC<Props> = ({ userId }) => {
+  const [chartData, setChartData] = useState<CountryClicks[] | undefined>([]);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const data = await getChartCountryClicksData(userId);
+
+      if (data) {
+        setChartData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  if (loading) {
+    return <ChartSkeleton />;
+  }
+
+  if (!loading && !chartData) {
+    return <NoChartData />;
+  }
+
   return (
     <Card>
       <CardHeader>
