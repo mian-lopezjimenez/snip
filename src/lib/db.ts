@@ -1,112 +1,163 @@
 "use server";
 
+import {
+  unstable_cacheTag as cacheTag,
+  revalidateTag,
+  unstable_cacheLife as cacheLife,
+} from "next/cache";
+
 import { CountryClicks, IndicatorsResponse, MonthClicks } from "@/types";
-import { formatNumber } from "@/utils/format";
+// import { formatNumber } from "@/utils/format";
 import { createClient } from "@/utils/supabase/server";
+
+// export async function getTotalClicks(
+//   userId: string | undefined
+// ): Promise<IndicatorsResponse | null> {
+//   const supabase = await createClient();
+
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const [countClicks, percentageClicks] = await Promise.all([
+//     supabase.rpc("count_total_clicks", { userid: userId }),
+//     supabase.rpc("compare_clicks_months", { userid: userId }),
+//   ]);
+
+//   if (countClicks.error || percentageClicks.error) {
+//     return null;
+//   }
+
+//   const clicksPercentageFormatted = formatNumber({
+//     number: percentageClicks.data / 100,
+//     options: {
+//       style: "percent",
+//       minimumFractionDigits: 0,
+//       maximumFractionDigits: 1,
+//       signDisplay: "always",
+//     },
+//   });
+
+//   return {
+//     value: countClicks.data,
+//     percentage: clicksPercentageFormatted,
+//   };
+// }
 
 export async function getTotalClicks(
   userId: string | undefined
 ): Promise<IndicatorsResponse | null> {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("dashboard-indicators");
+  cacheLife("minutes");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/total-clicks?userId=${userId}`
+  );
 
-  if (!userId) {
-    return null;
-  }
+  const data = await response.json();
 
-  const [countClicks, percentageClicks] = await Promise.all([
-    supabase.rpc("count_total_clicks", { userid: userId }),
-    supabase.rpc("compare_clicks_months", { userid: userId }),
-  ]);
-
-  if (countClicks.error || percentageClicks.error) {
-    return null;
-  }
-
-  const clicksPercentageFormatted = formatNumber({
-    number: percentageClicks.data / 100,
-    options: {
-      style: "percent",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 1,
-      signDisplay: "always",
-    },
-  });
-
-  return {
-    value: countClicks.data,
-    percentage: clicksPercentageFormatted,
-  };
+  return data;
 }
+
+// export async function getUniqueClicks(
+//   userId: string | undefined
+// ): Promise<IndicatorsResponse | null> {
+//   const supabase = await createClient();
+
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const [countUniqueClicks, percentageUniqueClicks] = await Promise.all([
+//     supabase.rpc("count_unique_clicks", { userid: userId }),
+//     supabase.rpc("compare_unique_clicks_months", { userid: userId }),
+//   ]);
+
+//   if (countUniqueClicks.error || percentageUniqueClicks.error) {
+//     return null;
+//   }
+
+//   return {
+//     value: countUniqueClicks.data,
+//     percentage: formatNumber({
+//       number: percentageUniqueClicks.data / 100,
+//       options: {
+//         style: "percent",
+//         minimumFractionDigits: 0,
+//         maximumFractionDigits: 1,
+//         signDisplay: "always",
+//       },
+//     }),
+//   };
+// }
 
 export async function getUniqueClicks(
   userId: string | undefined
 ): Promise<IndicatorsResponse | null> {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("dashboard-indicators");
+  cacheLife("minutes");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/unique-clicks?userId=${userId}`
+  );
 
-  if (!userId) {
-    return null;
-  }
+  const data = await response.json();
 
-  const [countUniqueClicks, percentageUniqueClicks] = await Promise.all([
-    supabase.rpc("count_unique_clicks", { userid: userId }),
-    supabase.rpc("compare_unique_clicks_months", { userid: userId }),
-  ]);
-
-  if (countUniqueClicks.error || percentageUniqueClicks.error) {
-    return null;
-  }
-
-  return {
-    value: countUniqueClicks.data,
-    percentage: formatNumber({
-      number: percentageUniqueClicks.data / 100,
-      options: {
-        style: "percent",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 1,
-        signDisplay: "always",
-      },
-    }),
-  };
+  return data;
 }
+
+// export async function getTotalUrls(
+//   userId: string | undefined
+// ): Promise<IndicatorsResponse | null> {
+//   const supabase = await createClient();
+
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const { data, error } = await supabase
+//     .from("urls")
+//     .select("id.count()")
+//     .eq("user_id", userId)
+//     .single();
+
+//   const { data: urlsPercentage } = await supabase.rpc("compare_urls_months", {
+//     user_id: userId,
+//   });
+
+//   if (error) {
+//     return null;
+//   }
+
+//   const urlsPercentageFormatted = formatNumber({
+//     number: urlsPercentage / 100,
+//     options: {
+//       style: "percent",
+//       minimumFractionDigits: 0,
+//       maximumFractionDigits: 1,
+//       signDisplay: "always",
+//     },
+//   });
+
+//   return {
+//     value: data.count,
+//     percentage: urlsPercentageFormatted,
+//   };
+// }
 
 export async function getTotalUrls(
   userId: string | undefined
 ): Promise<IndicatorsResponse | null> {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("dashboard-indicators");
+  cacheLife("minutes");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/total-urls?userId=${userId}`
+  );
 
-  if (!userId) {
-    return null;
-  }
+  const data = await response.json();
 
-  const { data, error } = await supabase
-    .from("urls")
-    .select("id.count()")
-    .eq("user_id", userId)
-    .single();
-
-  const { data: urlsPercentage } = await supabase.rpc("compare_urls_months", {
-    user_id: userId,
-  });
-
-  if (error) {
-    return null;
-  }
-
-  const urlsPercentageFormatted = formatNumber({
-    number: urlsPercentage / 100,
-    options: {
-      style: "percent",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 1,
-      signDisplay: "always",
-    },
-  });
-
-  return {
-    value: data.count,
-    percentage: urlsPercentageFormatted,
-  };
+  return data;
 }
 
 export async function getChartClicksData(
@@ -149,4 +200,9 @@ export async function getChartCountryClicksData(
   }
 
   return clicksPerCountry;
+}
+
+export async function revalidateIndicators() {
+  "use server";
+  revalidateTag("dashboard-indicators");
 }

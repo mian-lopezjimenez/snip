@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useCallback } from "react";
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -37,7 +37,7 @@ const CountryChart: FC<Props> = ({ userId }) => {
   const [chartData, setChartData] = useState<CountryClicks[] | undefined>([]);
   const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getChartCountryClicksData(userId);
@@ -50,11 +50,11 @@ const CountryChart: FC<Props> = ({ userId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   if (loading) {
     return <ChartSkeleton />;
