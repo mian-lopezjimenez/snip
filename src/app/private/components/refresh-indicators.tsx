@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   Tooltip,
 } from "@/components/ui/tooltip";
-import { revaligateTags } from "@/lib/db";
+import { redalidateTags } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
 
@@ -28,7 +28,7 @@ const RefreshIndicators = () => {
 
   const action = async () => {
     startTransition(async () => {
-      await revaligateTags(indicators);
+      await redalidateTags(indicators);
 
       toast.info(
         `Dashboard information refreshed at ${new Date().toLocaleString()}`

@@ -9,6 +9,7 @@ import {
 import { CountryClicks, IndicatorsResponse, MonthClicks } from "@/types";
 // import { formatNumber } from "@/utils/format";
 // import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 // export async function getTotalClicks(
 //   userId: string | undefined
@@ -232,10 +233,11 @@ export async function getChartCountryClicksData(
   return data;
 }
 
-export async function revaligateTags(tags: string[]) {
+export async function redalidateTags(tags: string[]) {
   "use server";
 
-  tags.forEach((tag) => {
-    revalidateTag(tag);
-  });
+  revalidatePath("/private", "page");
+  // tags.forEach((tag) => {
+  //   revalidateTag(tag);
+  // });
 }
