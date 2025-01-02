@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect, useCallback } from "react";
+import { FC } from "react";
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -11,12 +11,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartSkeleton } from "@/components/skeletons";
-import { getChartClicksData } from "@/lib/db";
-import { MonthClicks } from "@/types";
 import { type ChartConfig } from "@/components/ui/chart";
-import NoChartData from "./no-chart-data";
+import { MonthClicks } from "@/types";
+import useChart from "@/hooks/use-chart";
 
 const chartConfig = {
   totalClicks: {
@@ -29,73 +26,34 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-interface Props {
-  userId: string | undefined;
-}
-
-const ClicksChart: FC<Props> = ({ userId }) => {
-  const [chartData, setChartData] = useState<MonthClicks[] | undefined>([]);
-  const [loading, setLoading] = useState(false);
-
-  const getData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await getChartClicksData(userId);
-
-      if (data) {
-        setChartData(data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
-
-  if (loading) {
-    return <ChartSkeleton />;
-  }
-
-  if (!loading && !chartData) {
-    return <NoChartData />;
-  }
+const ClicksChart: FC = () => {
+  const { data } = useChart<MonthClicks[]>();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Clicks by month</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer className="min-h-[200px] w-full" config={chartConfig}>
-          <BarChart data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-            <Bar
-              isAnimationActive={false}
-              dataKey="totalClicks"
-              fill={chartConfig.totalClicks.color}
-            />
-            <Bar
-              isAnimationActive={false}
-              dataKey="uniqueClicks"
-              fill={chartConfig.uniqueClicks.color}
-            />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+    <ChartContainer className="min-h-[200px] w-full" config={chartConfig}>
+      <BarChart data={data}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => value.slice(0, 3)}
+        />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Bar
+          isAnimationActive={false}
+          dataKey="totalClicks"
+          fill={chartConfig.totalClicks.color}
+        />
+        <Bar
+          isAnimationActive={false}
+          dataKey="uniqueClicks"
+          fill={chartConfig.uniqueClicks.color}
+        />
+      </BarChart>
+    </ChartContainer>
   );
 };
 

@@ -8,7 +8,7 @@ import {
 
 import { CountryClicks, IndicatorsResponse, MonthClicks } from "@/types";
 // import { formatNumber } from "@/utils/format";
-import { createClient } from "@/utils/supabase/server";
+// import { createClient } from "@/utils/supabase/server";
 
 // export async function getTotalClicks(
 //   userId: string | undefined
@@ -160,49 +160,82 @@ export async function getTotalUrls(
   return data;
 }
 
+// export async function getChartClicksData(
+//   userId: string | undefined
+// ): Promise<MonthClicks[] | null> {
+//   const supabase = await createClient();
+
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const { data: clicksPerMonth, error } = await supabase.rpc(
+//     "clicks_per_month",
+//     { userid: userId }
+//   );
+
+//   if (error) {
+//     return null;
+//   }
+
+//   return clicksPerMonth;
+// }
+
 export async function getChartClicksData(
   userId: string | undefined
 ): Promise<MonthClicks[] | null> {
-  const supabase = await createClient();
-
-  if (!userId) {
-    return null;
-  }
-
-  const { data: clicksPerMonth, error } = await supabase.rpc(
-    "clicks_per_month",
-    { userid: userId }
+  "use cache";
+  cacheTag("clicks-month-chart");
+  cacheLife("hours");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/clicks-months?userId=${userId}`
   );
 
-  if (error) {
-    return null;
-  }
+  const data = await response.json();
 
-  return clicksPerMonth;
+  return data;
 }
+
+// export async function getChartCountryClicksData(
+//   userId: string | undefined
+// ): Promise<CountryClicks[] | null> {
+//   const supabase = await createClient();
+
+//   if (!userId) {
+//     return null;
+//   }
+
+//   const { data: clicksPerCountry, error } = await supabase.rpc(
+//     "clicks_per_country",
+//     { userid: userId }
+//   );
+
+//   if (error) {
+//     return null;
+//   }
+
+//   return clicksPerCountry;
+// }
 
 export async function getChartCountryClicksData(
   userId: string | undefined
 ): Promise<CountryClicks[] | null> {
-  const supabase = await createClient();
-
-  if (!userId) {
-    return null;
-  }
-
-  const { data: clicksPerCountry, error } = await supabase.rpc(
-    "clicks_per_country",
-    { userid: userId }
+  "use cache";
+  cacheTag("clicks-country-chart");
+  cacheLife("hours");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/clicks-countries?userId=${userId}`
   );
 
-  if (error) {
-    return null;
-  }
+  const data = await response.json();
 
-  return clicksPerCountry;
+  return data;
 }
 
-export async function revalidateIndicators() {
+export async function revaligateTags(tags: string[]) {
   "use server";
-  revalidateTag("dashboard-indicators");
+
+  tags.forEach((tag) => {
+    revalidateTag(tag);
+  });
 }

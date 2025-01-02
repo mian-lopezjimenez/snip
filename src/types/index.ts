@@ -34,3 +34,12 @@ export interface CountryClicks {
   totalClicks: number;
   uniqueClicks: number;
 }
+
+export interface ChartProviderProps<T> {
+  data: T[];
+  children: React.ReactNode;
+}
+
+export interface ChartContextType<T> {
+  data: T | undefined;
+}

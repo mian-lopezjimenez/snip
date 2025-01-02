@@ -3,6 +3,10 @@ import ClicksChart from "@/app/private/components/clicks-chart";
 import CountryChart from "@/app/private/components/country-chart";
 import Indicators from "@/app/private/components/indicators";
 import RefreshIndicators from "./components/refresh-indicators";
+import ChartWrapper from "@/components/chart-wrapper";
+import { getChartClicksData, getChartCountryClicksData } from "@/lib/db";
+import { Suspense } from "react";
+import { ChartSkeleton } from "@/components/skeletons";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
@@ -22,8 +26,23 @@ export default async function PrivatePage() {
       <Indicators userId={user?.id} />
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ClicksChart userId={user?.id} />
-        <CountryChart userId={user?.id} />
+        <Suspense fallback={<ChartSkeleton />}>
+          <ChartWrapper
+            title="Clicks per month"
+            getData={() => getChartClicksData(user?.id)}
+          >
+            <ClicksChart />
+          </ChartWrapper>
+        </Suspense>
+
+        <Suspense fallback={<ChartSkeleton />}>
+          <ChartWrapper
+            title="Clicks per country"
+            getData={() => getChartCountryClicksData(user?.id)}
+          >
+            <CountryChart />
+          </ChartWrapper>
+        </Suspense>
       </section>
     </>
   );
