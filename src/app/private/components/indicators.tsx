@@ -1,16 +1,14 @@
-import { Suspense } from "react";
+import { FC, Suspense } from "react";
 
-import { createClient } from "@/utils/supabase/server";
 import { indicators } from "@/lib/data";
 import { IndicatorSkeleton } from "@/components/skeletons";
 import IndicatorCard from "@/app/private/components/indicator-card";
 
-const Indicators = async () => {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+interface Props {
+  userId: string | undefined;
+}
 
+const Indicators: FC<Props> = ({ userId }) => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {indicators.map((indicator) => (
@@ -20,7 +18,7 @@ const Indicators = async () => {
         >
           <IndicatorCard
             {...indicator}
-            getData={() => indicator.getData(user?.id)}
+            getData={() => indicator.getData(userId)}
           />
         </Suspense>
       ))}

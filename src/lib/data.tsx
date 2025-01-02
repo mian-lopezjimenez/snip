@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { Feature } from "@/types";
-import { getTotalClicks, getTotalUrls } from "@/lib/db";
+import { getTotalClicks, getTotalUrls, getUniqueClicks } from "@/lib/db";
 
 export const snipFeatures: Feature[] = [
   {
@@ -82,6 +82,6 @@ export const indicators = [
   {
     title: "Unique Clicks",
     icon: <UserRound className="w-4 h-4" />,
-    getData: () => Promise.resolve({ value: 1234, percentage: "-2.7%" }),
+    getData: getUniqueClicks,
   },
 ];

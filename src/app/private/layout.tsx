@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AppSidebar from "@/components/app-sidebar/app-sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
+import AppSidebar from "@/components/app-sidebar/app-sidebar";
 
 interface Props {
   children: ReactNode;

@@ -1,5 +1,7 @@
 "use client";
 
+import { FC } from "react";
+
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -9,17 +11,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { CountryClicks } from "@/types";
 import { type ChartConfig } from "@/components/ui/chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const chartData = [
-  { country: "USA", totalClicks: 233, uniqueClicks: 200 },
-  { country: "Canada", totalClicks: 237, uniqueClicks: 120 },
-  { country: "France", totalClicks: 343, uniqueClicks: 190 },
-  { country: "Spain", totalClicks: 200, uniqueClicks: 130 },
-  { country: "Japan", totalClicks: 214, uniqueClicks: 140 },
-  { country: "Germany", totalClicks: 234, uniqueClicks: 110 },
-];
+import useChart from "@/hooks/use-chart";
 
 const chartConfig = {
   totalClicks: {
@@ -32,39 +26,34 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CountryChart = () => {
+const CountryChart: FC = () => {
+  const { data } = useChart<CountryClicks[]>();
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Clicks by country</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="country"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
-            <Bar
-              isAnimationActive={false}
-              dataKey="totalClicks"
-              fill={chartConfig.totalClicks.color}
-            />
-            <Bar
-              isAnimationActive={false}
-              dataKey="uniqueClicks"
-              fill={chartConfig.uniqueClicks.color}
-            />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+    <ChartContainer config={chartConfig}>
+      <BarChart data={data}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="country"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => value.slice(0, 3)}
+        />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Bar
+          isAnimationActive={false}
+          dataKey="totalClicks"
+          fill={chartConfig.totalClicks.color}
+        />
+        <Bar
+          isAnimationActive={false}
+          dataKey="uniqueClicks"
+          fill={chartConfig.uniqueClicks.color}
+        />
+      </BarChart>
+    </ChartContainer>
   );
 };
 
