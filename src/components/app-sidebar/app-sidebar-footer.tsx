@@ -32,7 +32,7 @@ const AppSidebarFooter = async () => {
                   <Avatar className="h-6 w-6">
                     <AvatarImage
                       src={user?.user_metadata.avatar_url}
-                      alt={`@${user?.user_metadata.user_name}`}
+                      alt={`User profile picture of @${user?.user_metadata.user_name}`}
                     />
                     <AvatarFallback>
                       {getInitials(user?.user_metadata.full_name)}
