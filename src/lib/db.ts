@@ -186,7 +186,7 @@ export async function getChartClicksData(
 ): Promise<MonthClicks[] | null> {
   "use cache";
   cacheTag("clicks-month-chart");
-  cacheLife("hours");
+  cacheLife("minutes");
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/clicks-months?userId=${userId}`
   );
@@ -222,7 +222,7 @@ export async function getChartCountryClicksData(
 ): Promise<CountryClicks[] | null> {
   "use cache";
   cacheTag("clicks-country-chart");
-  cacheLife("hours");
+  cacheLife("minutes");
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/clicks-countries?userId=${userId}`
   );
