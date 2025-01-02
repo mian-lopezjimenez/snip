@@ -45,6 +45,7 @@ const RefreshIndicators = () => {
             variant="ghost"
             onClick={action}
             disabled={isPending}
+            aria-label="Refresh dashboard information"
           >
             {isPending ? <Spinner /> : <RefreshCw />}
           </Button>
