@@ -236,6 +236,7 @@ export async function getChartCountryClicksData(
 export async function redalidateTags(tags: string[]) {
   "use server";
 
+  console.log(tags);
   revalidatePath("/private", "page");
   // tags.forEach((tag) => {
   //   revalidateTag(tag);
