@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useTransition } from "react";
+import { useTransition } from "react";
 
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
@@ -17,18 +17,10 @@ import Spinner from "@/components/spinner";
 
 const RefreshIndicators = () => {
   const [isPending, startTransition] = useTransition();
-  const indicators = useMemo(
-    () => [
-      "dashboard-indicators",
-      "clicks-month-chart",
-      "clicks-country-chart",
-    ],
-    []
-  );
 
   const action = async () => {
     startTransition(async () => {
-      await redalidateTags(indicators);
+      await redalidateTags();
 
       toast.info(
         `Dashboard information refreshed at ${new Date().toLocaleString()}`

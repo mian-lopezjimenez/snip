@@ -233,12 +233,6 @@ export async function getChartCountryClicksData(
   return data;
 }
 
-export async function redalidateTags(tags: string[]) {
-  "use server";
-
-  console.log(tags);
+export async function redalidateTags() {
   revalidatePath("/private", "page");
-  // tags.forEach((tag) => {
-  //   revalidateTag(tag);
-  // });
 }
